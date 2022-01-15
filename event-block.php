@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Event Block
- * Description:       A block with several styles to add event listings to your website with seo-friendly event schema.
+ * Description:       Easily add event listing with an Add to Google Calendar button to your website.
  * Requires at least: 5.8
  * Requires PHP:      7.2
  * Version:           0.1.0

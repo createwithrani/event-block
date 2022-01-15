@@ -5,9 +5,24 @@
 	"version": "0.1.0",
 	"title": "Event",
 	"category": "widgets",
-	"description": "Example block written with ESNext standard and JSX support – build step required.",
+	"description": "Easily add event listing with an Add to Google Calendar button to your website.",
 	"supports": {
-		"html": false
+		"html": false,
+		"align": true
+	},
+	"attributes": {
+		"imgId": {
+			"type": "number"
+		},
+		"imgUrl": {
+			"type": "string"
+		},
+		"eventDate": {
+			"type": "string"
+		},
+		"eventDateU": {
+			"type": "integer"
+		}
 	},
 	"textdomain": "event-block",
 	"editorScript": "file:./build/index.js",

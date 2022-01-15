@@ -9,15 +9,15 @@ Stable tag: /trunk/
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A block with several styles to add event listings to your website with seo-friendly event schema as well!
+Easily add event listing with an Add to Google Calendar button to your website.
 
 == Description ==
 
-Sometimes you don't need _a whole event system plugin_ but just a way to add event listings to your website! Easily add event listings with names, date/time, an image, a small description, and a link.
+Sometimes you don't need _a whole event system plugin_ but just a way to add event listings to your website with a handy Add to Calendar link! This block let's you easily add event listings with names, date/time, an image, a small description, and a handy Add to Calendar link to add events to your Google Calendar.
 
 == Installation ==
 
-1. Upload `event-block.php` to the `/wp-content/plugins/` directory, or search for `Event Block` from the Block Library in your WordPress installation
+1. Upload `event-block` to the `/wp-content/plugins/` directory, or search for `Event Block` from the Block Library in your WordPress installation
 2. Activate the plugin through the 'Plugins' menu in WordPress if you installed through the plugin repository.
 3. Add the Event Block to your website and edit away!
 
