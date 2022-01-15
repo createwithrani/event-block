@@ -1,0 +1,24 @@
+{
+	"name": "event-block",
+	"version": "0.1.0",
+	"description": "A block with several styles to add event listings to your website with seo-friendly event schema as well.",
+	"author": "Aurooba Ahmed",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"start": "wp-scripts start",
+		"packages-update": "wp-scripts packages-update"
+	},
+	"dependencies": {
+		"@wordpress/block-editor": "^8.0.13",
+		"@wordpress/blocks": "^11.1.5",
+		"@wordpress/i18n": "^4.2.4"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^19.2.2"
+	}
+}
