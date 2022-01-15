@@ -6,25 +6,21 @@
  */
 
 .wp-block-raniblocks-event-block {
-	display: grid;
-	grid-template-areas:
-		"img title"
-		"img desc"
-		"img desc"
-		"img desc";
+	display: flex;
 	gap: 1rem;
-	figure {
-		grid-area: img;
-		width: 100%;
+	.details {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		// flex-grow: 2;
+		gap: var(--global--spacing-vertical, 1rem);
 	}
-	& > .wp-block-heading {
-		grid-area: title;
-	}
-	& > p {
-		grid-area: desc;
-	}
-	& > .wp-block-heading,
-	& > p.wp-block {
+	.wp-block-heading,
+	p.wp-block {
 		margin-left: 0;
+		margin-bottom: 0;
+	}
+	figure {
+		max-width: 33%;
 	}
 }

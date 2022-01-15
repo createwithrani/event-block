@@ -4,6 +4,46 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-raniblocks-event-block {
-	// border: 1px dotted #f00;
+// .wp-block-raniblocks-event-block {
+// 	.editor-post-featured-image__toggle {
+// 		grid-area: img;
+// 	}
+// 	.wp-block-heading,
+// 	p.wp-block {
+// 		margin-left: 0;
+// 		margin-bottom: 0;
+// 	}
+// }
+
+.editor-styles-wrapper {
+	.wp-block-raniblocks-event-block {
+		.editor-post-featured-image__preview,
+		.editor-post-featured-image__toggle {
+			max-width: 33%;
+			height: auto;
+		}
+		.editor-post-featured-image__preview {
+			padding: 0;
+		}
+		.wp-block-heading,
+		p.wp-block {
+			margin-left: 0;
+			margin-bottom: 0;
+			margin-top: 0;
+		}
+		.components-responsive-wrapper {
+			height: 100%;
+			img {
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+}
+
+.raniblocks-date-button {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

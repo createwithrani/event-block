@@ -8,31 +8,22 @@
  * Replace them with your own styles or remove the file completely.
  */
 .wp-block-raniblocks-event-block {
-  display: -ms-grid;
-  display: grid;
-      grid-template-areas: "img title" "img desc" "img desc" "img desc";
+  display: flex;
   gap: 1rem;
 }
-.wp-block-raniblocks-event-block figure {
-  -ms-grid-row: 1;
-  -ms-grid-row-span: 7;
-  -ms-grid-column: 1;
-  grid-area: img;
-  width: 100%;
+.wp-block-raniblocks-event-block .details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--global--spacing-vertical, 1rem);
 }
-.wp-block-raniblocks-event-block > .wp-block-heading {
-  -ms-grid-row: 1;
-  -ms-grid-column: 3;
-  grid-area: title;
-}
-.wp-block-raniblocks-event-block > p {
-  -ms-grid-row: 3;
-  -ms-grid-row-span: 5;
-  -ms-grid-column: 3;
-  grid-area: desc;
-}
-.wp-block-raniblocks-event-block > .wp-block-heading, .wp-block-raniblocks-event-block > p.wp-block {
+.wp-block-raniblocks-event-block .wp-block-heading,
+.wp-block-raniblocks-event-block p.wp-block {
   margin-left: 0;
+  margin-bottom: 0;
+}
+.wp-block-raniblocks-event-block figure {
+  max-width: 33%;
 }
 
 /*# sourceMappingURL=style-index.css.map*/
