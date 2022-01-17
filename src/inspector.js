@@ -21,10 +21,12 @@ export const Inspector = (props) => {
 			.join("")
 	);
 	const { eventDate, eventDateU, setAttributes } = props;
+
 	function onChangeDate(value) {
 		setAttributes({ eventDate: value });
 		setAttributes({ eventDateU: timezone.string });
 	}
+
 	const DatePicker = () => {
 		return (
 			<DateTimePicker
