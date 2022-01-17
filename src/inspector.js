@@ -1,30 +1,36 @@
 import { __ } from "@wordpress/i18n";
 import {
 	DateTimePicker,
-	ToggleControl,
 	Dropdown,
 	Button,
-	PanelRow,
 	PanelBody,
 	Panel,
 } from "@wordpress/components";
-import { useSelect, useDispatch, withSelect } from "@wordpress/data";
-import { dateI18n } from "@wordpress/date";
-import { useState } from "@wordpress/element";
+import { format, __experimentalGetSettings } from "@wordpress/date";
 import { InspectorControls } from "@wordpress/block-editor";
 
 export const Inspector = (props) => {
+	const dateSettings = __experimentalGetSettings();
+	const timezone = dateSettings.timezone;
+	const is12Hour = /a(?!\\)/i.test(
+		dateSettings.formats.time
+			.toLowerCase()
+			.replace(/\\\\/g, "")
+			.split("")
+			.reverse()
+			.join("")
+	);
 	const { eventDate, eventDateU, setAttributes } = props;
 	function onChangeDate(value) {
 		setAttributes({ eventDate: value });
-		setAttributes({ eventDateU: dateI18n("U", value) });
+		setAttributes({ eventDateU: timezone.string });
 	}
 	const DatePicker = () => {
 		return (
 			<DateTimePicker
 				currentDate={eventDate}
 				onChange={onChangeDate}
-				is12Hour={true}
+				is12Hour={is12Hour}
 			/>
 		);
 	};
@@ -39,8 +45,8 @@ export const Inspector = (props) => {
 						renderToggle={({ isOpen, onToggle }) => (
 							<Button isTertiary onClick={onToggle} aria-expanded={isOpen}>
 								{eventDate
-									? dateI18n("F j, Y g:i a", eventDate)
-									: "Date & Time"}
+									? format("F j, Y g:i a", eventDate)
+									: "Choose Date & Time"}
 							</Button>
 						)}
 						renderContent={() => (

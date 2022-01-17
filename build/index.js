@@ -18,11 +18,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
-/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _image__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./image */ "./src/image.js");
-/* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./inspector */ "./src/inspector.js");
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _image__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./image */ "./src/image.js");
+/* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./inspector */ "./src/inspector.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+
+
 
 
 
@@ -40,29 +44,64 @@ function edit(props) {
     imgId,
     imgUrl,
     eventDate,
-    eventDateU
+    eventDateU,
+    buttonText,
+    eventInfo
   } = props.attributes;
+  const {
+    clientId
+  } = props;
   const {
     setAttributes
   } = props;
+  const [eventInformation, setEventInformation] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(eventInfo);
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({});
   const innerBlockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useInnerBlocksProps)(blockProps, {
     template: BLOCKS_TEMPLATE,
     templateLock: true
   });
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_inspector__WEBPACK_IMPORTED_MODULE_5__.Inspector, {
+  const {
+    currentBlock
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => ({
+    currentBlock: select("core/block-editor").getBlock(clientId)
+  }));
+  currentBlock.innerBlocks.map(block => {
+    if ("core/heading" === block.name && block.attributes.content !== eventInformation["eventTitle"]) {
+      setEventInformation({ ...eventInformation,
+        eventTitle: block.attributes.content
+      });
+    }
+
+    if ("core/paragraph" === block.name && block.attributes.content !== eventInformation["eventDesc"]) {
+      setEventInformation({ ...eventInformation,
+        eventDesc: block.attributes.content
+      });
+    }
+  });
+  setAttributes({
+    eventInfo: eventInformation
+  });
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_inspector__WEBPACK_IMPORTED_MODULE_6__.Inspector, {
     eventDate: eventDate,
     eventDateU: eventDateU,
     setAttributes: setAttributes
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", innerBlockProps, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_image__WEBPACK_IMPORTED_MODULE_4__.ImageComponent, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", innerBlockProps, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_image__WEBPACK_IMPORTED_MODULE_5__.ImageComponent, {
     setAttributes: setAttributes,
     imgId: imgId,
     imgUrl: imgUrl
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "details"
   }, eventDate && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
-    datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("h:iO", eventDate)
-  }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("F j, Y g:i a e", eventDate)), innerBlockProps.children)));
+    datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("h:i", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("O", eventDate)
+  }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("F j, Y g:i a", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.dateI18n)(" e", eventDate)), innerBlockProps.children, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+    tagName: "span",
+    value: buttonText,
+    allowedFormats: [],
+    onChange: content => setAttributes({
+      buttonText: content
+    }),
+    placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Add to Calendar text...")
+  }))));
 }
 
 /***/ }),
@@ -175,21 +214,16 @@ const ImageComponent = props => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
 /* harmony import */ var _icon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./icon */ "./src/icon.js");
 /* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../block.json */ "./block.json");
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./save */ "./src/save.js");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./save */ "./src/save.js");
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-
-
-
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -203,6 +237,8 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Internal dependencies
  */
+
+
 
 
 
@@ -222,12 +258,12 @@ const {
   /**
    * @see ./edit.js
    */
-  edit: _edit__WEBPACK_IMPORTED_MODULE_5__["default"],
+  edit: _edit__WEBPACK_IMPORTED_MODULE_4__["default"],
 
   /**
    * @see ./save.js
    */
-  save: _save__WEBPACK_IMPORTED_MODULE_6__["default"]
+  save: _save__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 
 /***/ }),
@@ -248,20 +284,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
-/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__);
-
-
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
 
 
 
 
 
 const Inspector = props => {
+  const dateSettings = (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.__experimentalGetSettings)();
+
+  const timezone = dateSettings.timezone;
+  const is12Hour = /a(?!\\)/i.test(dateSettings.formats.time.toLowerCase().replace(/\\\\/g, "").split("").reverse().join(""));
   const {
     eventDate,
     eventDateU,
@@ -273,7 +309,7 @@ const Inspector = props => {
       eventDate: value
     });
     setAttributes({
-      eventDateU: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.dateI18n)("U", value)
+      eventDateU: timezone.string
     });
   }
 
@@ -281,11 +317,11 @@ const Inspector = props => {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.DateTimePicker, {
       currentDate: eventDate,
       onChange: onChangeDate,
-      is12Hour: true
+      is12Hour: is12Hour
     });
   };
 
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Content Settings", "raniblocks-event-block")
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
     className: "raniblocks-date-button"
@@ -301,7 +337,7 @@ const Inspector = props => {
         isTertiary: true,
         onClick: onToggle,
         "aria-expanded": isOpen
-      }, eventDate ? (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.dateI18n)("F j, Y g:i a", eventDate) : "Date & Time");
+      }, eventDate ? (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("F j, Y g:i a", eventDate) : "Choose Date & Time");
     },
     renderContent: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(DatePicker, null))
   }))));
@@ -360,15 +396,27 @@ function save(_ref) {
   } = _ref;
   const {
     imgUrl,
-    eventDate
+    eventDate,
+    buttonText,
+    eventInfo,
+    eventDateU
   } = attributes;
+  const eventTitle = eventInfo["eventTitle"];
+  const eventDesc = eventInfo["eventDesc"];
+  const calendarUrl = "http://www.google.com/calendar/event?action=TEMPLATE&text=" + encodeURI(eventTitle) + "&dates=" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("Ymd", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("His", eventDate) + "/" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("Ymd", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("His", eventDate) + "&ctz=" + eventDateU + "&details=" + encodeURI(eventDesc);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("figure", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: imgUrl
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "details"
   }, eventDate && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
-    datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("h:iO", eventDate)
-  }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("F j, Y g:i a", eventDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, null)));
+    datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("h:i", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("O", eventDate)
+  }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("F j, Y g:i a", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)(" e", eventDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: calendarUrl,
+    target: "_blank"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText.Content, {
+    tagName: "span",
+    value: buttonText
+  }))));
 }
 
 /***/ }),
@@ -473,7 +521,7 @@ module.exports = window["wp"]["i18n"];
   \********************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json","apiVersion":2,"name":"raniblocks/event-block","version":"0.1.0","title":"Event","category":"widgets","description":"Easily add event listing with an Add to Google Calendar button to your website.","supports":{"html":false,"align":true},"attributes":{"imgId":{"type":"number"},"imgUrl":{"type":"string"},"eventDate":{"type":"string"},"eventDateU":{"type":"integer"}},"textdomain":"event-block","editorScript":"file:./build/index.js","editorStyle":"file:./build/index.css","style":"file:./build/style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json","apiVersion":2,"name":"raniblocks/event-block","version":"0.1.0","title":"Event","category":"widgets","description":"Easily add event listing with an Add to Google Calendar button to your website.","supports":{"html":false,"align":true},"attributes":{"imgId":{"type":"number"},"imgUrl":{"type":"string"},"eventDate":{"type":"string"},"eventDateU":{"type":"integer"},"eventInfo":{"type":"object","default":{"eventTitle":"","eventDesc":""}},"buttonText":{"type":"string","source":"html","selector":"span"}},"textdomain":"event-block","editorScript":"file:./build/index.js","editorStyle":"file:./build/index.css","style":"file:./build/style-index.css"}');
 
 /***/ })
 
