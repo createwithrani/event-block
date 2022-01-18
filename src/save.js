@@ -12,6 +12,9 @@ import { __ } from "@wordpress/i18n";
  */
 import { useBlockProps, InnerBlocks, RichText } from "@wordpress/block-editor";
 import { dateI18n, format, gmdate, gmdateI18n } from "@wordpress/date";
+
+import { TimeDisplay } from "./time-display";
+import { gCal } from "./gcal";
 /**
  * The save function defines the way in which the different attributes should
  * be combined into the final markup, which is then serialized by the block
@@ -22,25 +25,16 @@ import { dateI18n, format, gmdate, gmdateI18n } from "@wordpress/date";
  * @return {WPElement} Element to render.
  */
 export default function save({ attributes }) {
-	const { imgUrl, eventDate, buttonText, eventInfo, eventDateU } = attributes;
-	const eventTitle = eventInfo["eventTitle"];
-	const eventDesc = eventInfo["eventDesc"];
-	const calendarUrl =
-		"http://www.google.com/calendar/event?action=TEMPLATE&text=" +
-		encodeURI(eventTitle) +
-		"&dates=" +
-		format("Ymd", eventDate) +
-		"T" +
-		format("His", eventDate) +
-		"/" +
-		format("Ymd", eventDate) +
-		"T" +
-		format("His", eventDate) +
-		"&ctz=" +
-		eventDateU +
-		"&details=" +
-		encodeURI(eventDesc);
-
+	const {
+		imgUrl,
+		eventDate,
+		buttonText,
+		eventInfo,
+		eventDateU,
+		eventDateEnd,
+	} = attributes;
+	const calendarUrl = gCal(eventInfo, eventDate, eventDateEnd, eventDateU);
+	console.log("save " + buttonText);
 	return (
 		<div {...useBlockProps.save()}>
 			<figure>
@@ -48,19 +42,15 @@ export default function save({ attributes }) {
 			</figure>
 			<div class="details">
 				{eventDate && (
-					<time
-						datetime={
-							dateI18n("Y-m-d", eventDate) +
-							"T" +
-							dateI18n("h:i", eventDate) +
-							dateI18n("O", eventDate)
-						}
-					>
-						{format("F j, Y g:i a", eventDate) + dateI18n(" e", eventDate)}
-					</time>
+					<TimeDisplay eventDate={eventDate} eventDateEnd={eventDateEnd} />
 				)}
 				<InnerBlocks.Content />
-				<a href={calendarUrl} target="_blank">
+				<a
+					href={calendarUrl}
+					target="_blank"
+					rel="noopener"
+					class="add-to-cal-link"
+				>
 					<RichText.Content tagName="span" value={buttonText} />
 				</a>
 			</div>
