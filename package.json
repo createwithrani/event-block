@@ -1,7 +1,7 @@
 {
 	"name": "event-block",
 	"version": "0.1.0",
-	"description": "Easily add event listing with an Add to Google Calendar button to your website.",
+	"description": "Easily add event listing with an Add to Calendar button to your website.",
 	"author": "Aurooba Ahmed",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",

@@ -9,11 +9,11 @@ Stable tag: /trunk/
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Easily add event listing with an Add to Google Calendar button to your website.
+Easily add event listing with an Add to Calendar button to your website.
 
 == Description ==
 
-Sometimes you don't need _a whole event system plugin_ but just a way to add event listings to your website with a handy Add to Calendar link! This block let's you easily add event listings with names, date/time, an image, a small description, and a handy Add to Calendar link to add events to your Google Calendar.
+Sometimes you don't need _a whole event system plugin_ but just a way to add event listings to your website with a handy Add to Calendar link! This block let's you easily add event listings with names, date/time, an image, a small description, and a handy Add to Calendar link to add events to your Calendar.
 
 == Installation ==
 

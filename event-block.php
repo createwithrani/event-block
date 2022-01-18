@@ -1,15 +1,15 @@
 <?php
 /**
  * Plugin Name:       Event Block
- * Description:       Easily add event listing with an Add to Google Calendar button to your website.
+ * Description:       Easily add event listing with an Add to Calendar button to your website.
  * Requires at least: 5.8
  * Requires PHP:      7.2
  * Version:           0.1.0
  * Author:            Aurooba Ahmed
+ * Author URI:        https://createwithrani.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       rani-event-block
- *npm start
  * @package           createwithrani
  */
 
