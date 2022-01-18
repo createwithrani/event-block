@@ -7,22 +7,22 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-raniblocks-event-block {
+.wp-block-createwithrani-event-block {
   display: flex;
   gap: 1rem;
 }
-.wp-block-raniblocks-event-block .details {
+.wp-block-createwithrani-event-block .details {
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: var(--global--spacing-vertical, 1rem);
 }
-.wp-block-raniblocks-event-block .wp-block-heading,
-.wp-block-raniblocks-event-block p.wp-block {
+.wp-block-createwithrani-event-block .wp-block-heading,
+.wp-block-createwithrani-event-block p.wp-block {
   margin-left: 0;
   margin-bottom: 0;
 }
-.wp-block-raniblocks-event-block figure {
+.wp-block-createwithrani-event-block figure {
   max-width: 33%;
 }
 

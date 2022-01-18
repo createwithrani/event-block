@@ -251,7 +251,7 @@ const {
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)("raniblocks/event-block", {
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)("createwithrani/event-block", {
   icon: _icon__WEBPACK_IMPORTED_MODULE_2__.EventIcon,
   attributes,
 
@@ -322,10 +322,10 @@ const Inspector = props => {
   };
 
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Content Settings", "raniblocks-event-block")
+    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Content Settings", "createwithrani-event-block")
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    className: "raniblocks-date-button"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Event Date", "raniblocks-event-block")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Dropdown, {
+    className: "createwithrani-date-button"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Event Date", "createwithrani-event-block")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Dropdown, {
     position: "bottom right",
     contentClassName: "edit-post-post-schedule__dialog",
     renderToggle: _ref => {
@@ -521,7 +521,7 @@ module.exports = window["wp"]["i18n"];
   \********************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json","apiVersion":2,"name":"raniblocks/event-block","version":"0.1.0","title":"Event","category":"widgets","description":"Easily add event listing with an Add to Google Calendar button to your website.","supports":{"html":false,"align":true},"attributes":{"imgId":{"type":"number"},"imgUrl":{"type":"string"},"eventDate":{"type":"string"},"eventDateU":{"type":"integer"},"eventInfo":{"type":"object","default":{"eventTitle":"","eventDesc":""}},"buttonText":{"type":"string","source":"html","selector":"span"}},"textdomain":"event-block","editorScript":"file:./build/index.js","editorStyle":"file:./build/index.css","style":"file:./build/style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json","apiVersion":2,"name":"createwithrani/event-block","version":"0.1.0","title":"Event","category":"widgets","description":"Easily add event listing with an Add to Google Calendar button to your website.","supports":{"html":false,"align":true},"attributes":{"imgId":{"type":"number"},"imgUrl":{"type":"string"},"eventDate":{"type":"string"},"eventDateU":{"type":"integer"},"eventInfo":{"type":"object","default":{"eventTitle":"","eventDesc":""}},"buttonText":{"type":"string","source":"html","selector":"span"}},"textdomain":"event-block","editorScript":"file:./build/index.js","editorStyle":"file:./build/index.css","style":"file:./build/style-index.css"}');
 
 /***/ })
 

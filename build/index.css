@@ -6,31 +6,31 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.editor-styles-wrapper .wp-block-raniblocks-event-block .editor-post-featured-image__preview,
-.editor-styles-wrapper .wp-block-raniblocks-event-block .editor-post-featured-image__toggle {
+.editor-styles-wrapper .wp-block-createwithrani-event-block .editor-post-featured-image__preview,
+.editor-styles-wrapper .wp-block-createwithrani-event-block .editor-post-featured-image__toggle {
   max-width: 33%;
   height: auto;
 }
-.editor-styles-wrapper .wp-block-raniblocks-event-block .editor-post-featured-image__preview {
+.editor-styles-wrapper .wp-block-createwithrani-event-block .editor-post-featured-image__preview {
   padding: 0;
 }
-.editor-styles-wrapper .wp-block-raniblocks-event-block .wp-block-heading,
-.editor-styles-wrapper .wp-block-raniblocks-event-block p.wp-block {
+.editor-styles-wrapper .wp-block-createwithrani-event-block .wp-block-heading,
+.editor-styles-wrapper .wp-block-createwithrani-event-block p.wp-block {
   margin-left: 0;
   margin-bottom: 0;
   margin-top: 0;
 }
-.editor-styles-wrapper .wp-block-raniblocks-event-block .components-responsive-wrapper {
+.editor-styles-wrapper .wp-block-createwithrani-event-block .components-responsive-wrapper {
   height: 100%;
 }
-.editor-styles-wrapper .wp-block-raniblocks-event-block .components-responsive-wrapper img {
+.editor-styles-wrapper .wp-block-createwithrani-event-block .components-responsive-wrapper img {
   height: 100%;
   width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
 
-.raniblocks-date-button {
+.createwithrani-date-button {
   display: flex;
   justify-content: space-between;
   align-items: center;

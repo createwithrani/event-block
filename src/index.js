@@ -29,7 +29,7 @@ const { attributes } = metadata;
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType("raniblocks/event-block", {
+registerBlockType("createwithrani/event-block", {
 	icon,
 	attributes,
 	/**

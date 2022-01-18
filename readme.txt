@@ -25,7 +25,7 @@ Sometimes you don't need _a whole event system plugin_ but just a way to add eve
 
 = How can I style the Event block differently? =
 
-All styles use the `.wp-block-raniblocks-event-block` selector, use that to override any styles you'd like! But preferably use a custom class that you add to do so.
+All styles use the `.wp-block-createwithrani-event-block` selector, use that to override any styles you'd like! But preferably use a custom class that you add to do so.
 
 == Screenshots ==
 

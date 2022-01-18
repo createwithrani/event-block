@@ -38,9 +38,9 @@ export const Inspector = (props) => {
 	};
 	return (
 		<InspectorControls>
-			<Panel title={__("Content Settings", "raniblocks-event-block")}>
-				<PanelBody className="raniblocks-date-button">
-					<span>{__("Event Date", "raniblocks-event-block")}</span>
+			<Panel title={__("Content Settings", "createwithrani-event-block")}>
+				<PanelBody className="createwithrani-date-button">
+					<span>{__("Event Date", "createwithrani-event-block")}</span>
 					<Dropdown
 						position="bottom right"
 						contentClassName="edit-post-post-schedule__dialog"
