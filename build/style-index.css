@@ -10,6 +10,7 @@
 .wp-block-createwithrani-event-block {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 .wp-block-createwithrani-event-block .details {
   display: flex;
@@ -31,6 +32,12 @@
 }
 .wp-block-createwithrani-event-block figure {
   max-width: 33%;
+}
+
+@media only screen and (max-width: 782px) {
+  .wp-block-createwithrani-event-block figure {
+    max-width: 100%;
+  }
 }
 
 /*# sourceMappingURL=style-index.css.map*/
