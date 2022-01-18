@@ -1,7 +1,7 @@
 === Event Block ===
 Contributors: aurooba
 Donate link: https://github.com/sponsors/aurooba
-Tags: events, event
+Tags: event, add to calendar, google calendar, ical
 Requires at least: 5.9
 Tested up to: 5.8.3
 Requires PHP: 7.2
