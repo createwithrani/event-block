@@ -17,6 +17,13 @@
   justify-content: center;
   gap: var(--global--spacing-vertical, 1rem);
 }
+.wp-block-createwithrani-event-block .time-details {
+  margin-bottom: calc(var(--global--spacing-vertical, 1rem) * -1);
+  display: flex;
+}
+.wp-block-createwithrani-event-block .time-details span {
+  margin: 0 0.5rem;
+}
 .wp-block-createwithrani-event-block .wp-block-heading,
 .wp-block-createwithrani-event-block p.wp-block {
   margin-left: 0;

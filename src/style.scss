@@ -15,6 +15,14 @@
 		// flex-grow: 2;
 		gap: var(--global--spacing-vertical, 1rem);
 	}
+	.time-details {
+		margin-bottom: calc(var(--global--spacing-vertical, 1rem) * -1);
+		display: flex;
+		span {
+			margin: 0 0.5rem;
+		}
+	}
+
 	.wp-block-heading,
 	p.wp-block {
 		margin-left: 0;

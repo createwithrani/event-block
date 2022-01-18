@@ -20,6 +20,9 @@
   margin-bottom: 0;
   margin-top: 0;
 }
+.editor-styles-wrapper .wp-block-createwithrani-event-block .add-to-cal-link {
+  pointer-events: none;
+}
 .editor-styles-wrapper .wp-block-createwithrani-event-block .components-responsive-wrapper {
   height: 100%;
 }
@@ -28,6 +31,9 @@
   width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+.editor-styles-wrapper .wp-block-createwithrani-event-block .placeholder-time {
+  opacity: 0.62;
 }
 
 .createwithrani-date-button {
