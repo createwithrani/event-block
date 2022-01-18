@@ -20,14 +20,18 @@ export const Inspector = (props) => {
 			.reverse()
 			.join("")
 	);
-	const { eventDate, eventDateU, setAttributes } = props;
+	const { eventDate, eventDateU, setAttributes, eventDateEnd } = props;
 
 	function onChangeDate(value) {
 		setAttributes({ eventDate: value });
 		setAttributes({ eventDateU: timezone.string });
 	}
+	function onChangeDateEnd(value) {
+		setAttributes({ eventDateEnd: value });
+		setAttributes({ eventDateU: timezone.string });
+	}
 
-	const DatePicker = () => {
+	const StartDatePicker = () => {
 		return (
 			<DateTimePicker
 				currentDate={eventDate}
@@ -36,27 +40,57 @@ export const Inspector = (props) => {
 			/>
 		);
 	};
+	const EndDatePicker = () => {
+		return (
+			<DateTimePicker
+				currentDate={eventDateEnd}
+				onChange={onChangeDateEnd}
+				is12Hour={is12Hour}
+			/>
+		);
+	};
 	return (
 		<InspectorControls>
 			<Panel title={__("Content Settings", "createwithrani-event-block")}>
-				<PanelBody className="createwithrani-date-button">
-					<span>{__("Event Date", "createwithrani-event-block")}</span>
-					<Dropdown
-						position="bottom right"
-						contentClassName="edit-post-post-schedule__dialog"
-						renderToggle={({ isOpen, onToggle }) => (
-							<Button isTertiary onClick={onToggle} aria-expanded={isOpen}>
-								{eventDate
-									? format("F j, Y g:i a", eventDate)
-									: "Choose Date & Time"}
-							</Button>
-						)}
-						renderContent={() => (
-							<div>
-								<DatePicker />
-							</div>
-						)}
-					/>
+				<PanelBody>
+					<div className="createwithrani-date-button">
+						<span>{__("Event Start", "createwithrani-event-block")}</span>
+						<Dropdown
+							position="bottom right"
+							contentClassName="edit-post-post-schedule__dialog"
+							renderToggle={({ isOpen, onToggle }) => (
+								<Button isTertiary onClick={onToggle} aria-expanded={isOpen}>
+									{eventDate
+										? format("F j, Y g:i a", eventDate)
+										: "Choose Date & Time"}
+								</Button>
+							)}
+							renderContent={() => (
+								<div>
+									<StartDatePicker />
+								</div>
+							)}
+						/>
+					</div>
+					<div className="createwithrani-date-button">
+						<span>{__("Event End", "createwithrani-event-block")}</span>
+						<Dropdown
+							position="bottom right"
+							contentClassName="edit-post-post-schedule__dialog"
+							renderToggle={({ isOpen, onToggle }) => (
+								<Button isTertiary onClick={onToggle} aria-expanded={isOpen}>
+									{eventDateEnd
+										? format("F j, Y g:i a", eventDateEnd)
+										: "Choose Date & Time"}
+								</Button>
+							)}
+							renderContent={() => (
+								<div>
+									<EndDatePicker />
+								</div>
+							)}
+						/>
+					</div>
 				</PanelBody>
 			</Panel>
 		</InspectorControls>
