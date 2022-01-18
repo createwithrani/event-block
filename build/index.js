@@ -24,7 +24,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _image__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./image */ "./src/image.js");
 /* harmony import */ var _inspector__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./inspector */ "./src/inspector.js");
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _gcal__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./gcal */ "./src/gcal.js");
+/* harmony import */ var _time_display__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./time-display */ "./src/time-display.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
 
 
 
@@ -33,6 +35,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+ // Our Event Block Template!
 
 const BLOCKS_TEMPLATE = [["core/heading", {
   level: 2
@@ -46,25 +51,28 @@ function edit(props) {
     eventDate,
     eventDateU,
     buttonText,
-    eventInfo
+    eventInfo,
+    eventDateEnd
   } = props.attributes;
   const {
-    clientId
-  } = props;
-  const {
+    clientId,
     setAttributes
-  } = props;
-  const [eventInformation, setEventInformation] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(eventInfo);
+  } = props; // Set up inner block props with the innerblock template, locked to stop changes/additions
+
   const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({});
   const innerBlockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useInnerBlocksProps)(blockProps, {
     template: BLOCKS_TEMPLATE,
     templateLock: true
-  });
+  }); // Grab the current block object so we can check when its inner blocks change
+
   const {
     currentBlock
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_3__.useSelect)(select => ({
     currentBlock: select("core/block-editor").getBlock(clientId)
-  }));
+  })); // Initialize state variables for event title/desc
+
+  const [eventInformation, setEventInformation] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(eventInfo); // Whenever the inner blocks change, save their content to the eventInfo object for calendar event creation
+
   currentBlock.innerBlocks.map(block => {
     if ("core/heading" === block.name && block.attributes.content !== eventInformation["eventTitle"]) {
       setEventInformation({ ...eventInformation,
@@ -81,27 +89,67 @@ function edit(props) {
   setAttributes({
     eventInfo: eventInformation
   });
+
+  function updateButtonText(value) {
+    // console.log("value " + value);
+    setAttributes({
+      buttonText: value
+    }); // console.log("edit " + buttonText);
+  }
+
+  const calendarUrl = (0,_gcal__WEBPACK_IMPORTED_MODULE_7__.gCal)(eventInfo, eventDate, eventDateEnd, eventDateU); //And then we display it all
+
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_inspector__WEBPACK_IMPORTED_MODULE_6__.Inspector, {
     eventDate: eventDate,
     eventDateU: eventDateU,
-    setAttributes: setAttributes
+    setAttributes: setAttributes,
+    eventDateEnd: eventDateEnd
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", innerBlockProps, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_image__WEBPACK_IMPORTED_MODULE_5__.ImageComponent, {
     setAttributes: setAttributes,
     imgId: imgId,
     imgUrl: imgUrl
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "details"
-  }, eventDate && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
-    datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("h:i", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("O", eventDate)
-  }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.format)("F j, Y g:i a", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_4__.dateI18n)(" e", eventDate)), innerBlockProps.children, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
+  }, eventDate && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_time_display__WEBPACK_IMPORTED_MODULE_8__.TimeDisplay, {
+    eventDate: eventDate,
+    eventDateEnd: eventDateEnd
+  }), (!eventDate || !eventDateEnd) && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
+    class: "placeholder-time"
+  }, "Set up event date and time in the Inspector"), innerBlockProps.children, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: calendarUrl,
+    target: "_blank",
+    rel: "noopener",
+    class: "add-to-cal-link"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText, {
     tagName: "span",
     value: buttonText,
     allowedFormats: [],
-    onChange: content => setAttributes({
-      buttonText: content
-    }),
+    onChange: updateButtonText,
     placeholder: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Add to Calendar text...")
-  }))));
+  })))));
+}
+
+/***/ }),
+
+/***/ "./src/gcal.js":
+/*!*********************!*\
+  !*** ./src/gcal.js ***!
+  \*********************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "gCal": function() { return /* binding */ gCal; }
+/* harmony export */ });
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_0__);
+
+function gCal(eventInfo, eventDate, eventDateEnd, eventDateU) {
+  const eventTitle = eventInfo["eventTitle"];
+  const eventDesc = eventInfo["eventDesc"]; //create Google Calendar URL from the provided information
+
+  const calendarUrl = "http://www.google.com/calendar/event?action=TEMPLATE&text=" + encodeURI(eventTitle) + "&dates=" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_0__.format)("Ymd", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_0__.format)("His", eventDate) + "/" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_0__.format)("Ymd", eventDateEnd) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_0__.format)("His", eventDateEnd) + "&ctz=" + eventDateU + "&details=" + encodeURI(eventDesc);
+  return calendarUrl;
 }
 
 /***/ }),
@@ -301,7 +349,8 @@ const Inspector = props => {
   const {
     eventDate,
     eventDateU,
-    setAttributes
+    setAttributes,
+    eventDateEnd
   } = props;
 
   function onChangeDate(value) {
@@ -313,7 +362,16 @@ const Inspector = props => {
     });
   }
 
-  const DatePicker = () => {
+  function onChangeDateEnd(value) {
+    setAttributes({
+      eventDateEnd: value
+    });
+    setAttributes({
+      eventDateU: timezone.string
+    });
+  }
+
+  const StartDatePicker = () => {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.DateTimePicker, {
       currentDate: eventDate,
       onChange: onChangeDate,
@@ -321,11 +379,19 @@ const Inspector = props => {
     });
   };
 
+  const EndDatePicker = () => {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.DateTimePicker, {
+      currentDate: eventDateEnd,
+      onChange: onChangeDateEnd,
+      is12Hour: is12Hour
+    });
+  };
+
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, {
     title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Content Settings", "createwithrani-event-block")
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "createwithrani-date-button"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Event Date", "createwithrani-event-block")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Dropdown, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Event Start", "createwithrani-event-block")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Dropdown, {
     position: "bottom right",
     contentClassName: "edit-post-post-schedule__dialog",
     renderToggle: _ref => {
@@ -339,8 +405,25 @@ const Inspector = props => {
         "aria-expanded": isOpen
       }, eventDate ? (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("F j, Y g:i a", eventDate) : "Choose Date & Time");
     },
-    renderContent: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(DatePicker, null))
-  }))));
+    renderContent: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(StartDatePicker, null))
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "createwithrani-date-button"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)("Event End", "createwithrani-event-block")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Dropdown, {
+    position: "bottom right",
+    contentClassName: "edit-post-post-schedule__dialog",
+    renderToggle: _ref2 => {
+      let {
+        isOpen,
+        onToggle
+      } = _ref2;
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+        isTertiary: true,
+        onClick: onToggle,
+        "aria-expanded": isOpen
+      }, eventDateEnd ? (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("F j, Y g:i a", eventDateEnd) : "Choose Date & Time");
+    },
+    renderContent: () => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(EndDatePicker, null))
+  })))));
 };
 
 /***/ }),
@@ -363,6 +446,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
 /* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _time_display__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./time-display */ "./src/time-display.js");
+/* harmony import */ var _gcal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./gcal */ "./src/gcal.js");
 
 
 /**
@@ -377,6 +462,8 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
+
+
 
 
 
@@ -399,25 +486,73 @@ function save(_ref) {
     eventDate,
     buttonText,
     eventInfo,
-    eventDateU
+    eventDateU,
+    eventDateEnd
   } = attributes;
-  const eventTitle = eventInfo["eventTitle"];
-  const eventDesc = eventInfo["eventDesc"];
-  const calendarUrl = "http://www.google.com/calendar/event?action=TEMPLATE&text=" + encodeURI(eventTitle) + "&dates=" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("Ymd", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("His", eventDate) + "/" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("Ymd", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("His", eventDate) + "&ctz=" + eventDateU + "&details=" + encodeURI(eventDesc);
+  const calendarUrl = (0,_gcal__WEBPACK_IMPORTED_MODULE_5__.gCal)(eventInfo, eventDate, eventDateEnd, eventDateU);
+  console.log("save " + buttonText);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("figure", null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
     src: imgUrl
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     class: "details"
-  }, eventDate && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
-    datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("h:i", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)("O", eventDate)
-  }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.format)("F j, Y g:i a", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_3__.dateI18n)(" e", eventDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+  }, eventDate && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_time_display__WEBPACK_IMPORTED_MODULE_4__.TimeDisplay, {
+    eventDate: eventDate,
+    eventDateEnd: eventDateEnd
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InnerBlocks.Content, null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
     href: calendarUrl,
-    target: "_blank"
+    target: "_blank",
+    rel: "noopener",
+    class: "add-to-cal-link"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText.Content, {
     tagName: "span",
     value: buttonText
   }))));
 }
+
+/***/ }),
+
+/***/ "./src/time-display.js":
+/*!*****************************!*\
+  !*** ./src/time-display.js ***!
+  \*****************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TimeDisplay": function() { return /* binding */ TimeDisplay; }
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/date */ "@wordpress/date");
+/* harmony import */ var _wordpress_date__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_date__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const TimeDisplay = props => {
+  const {
+    eventDate,
+    eventDateEnd
+  } = props;
+  const startDate = (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("Y-m-d", eventDate);
+  const endDate = (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("Y-m-d", eventDateEnd);
+
+  if (startDate === endDate) {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "time-details"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
+      datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("h:i", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("O", eventDate)
+    }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("F j, Y g:i a", eventDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "\u2013"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
+      datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("Y-m-d", eventDateEnd) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("h:i", eventDateEnd) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("O", eventDateEnd)
+    }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("g:i a", eventDateEnd) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.dateI18n)(" e", eventDateEnd)));
+  } else {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "time-details"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
+      datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("Y-m-d", eventDate) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("h:i", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("O", eventDate)
+    }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("F j, Y g:i a", eventDate) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.dateI18n)(" e", eventDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "\u2013"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("time", {
+      datetime: (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("Y-m-d", eventDateEnd) + "T" + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("h:i", eventDateEnd) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("O", eventDateEnd)
+    }, (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.format)("F j, Y g:i a", eventDateEnd) + (0,_wordpress_date__WEBPACK_IMPORTED_MODULE_1__.dateI18n)(" e", eventDateEnd)));
+  }
+};
 
 /***/ }),
 
@@ -521,7 +656,7 @@ module.exports = window["wp"]["i18n"];
   \********************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json","apiVersion":2,"name":"createwithrani/event-block","version":"0.1.0","title":"Event","category":"widgets","description":"Easily add event listing with an Add to Google Calendar button to your website.","supports":{"html":false,"align":true},"attributes":{"imgId":{"type":"number"},"imgUrl":{"type":"string"},"eventDate":{"type":"string"},"eventDateU":{"type":"integer"},"eventInfo":{"type":"object","default":{"eventTitle":"","eventDesc":""}},"buttonText":{"type":"string","source":"html","selector":"span"}},"textdomain":"event-block","editorScript":"file:./build/index.js","editorStyle":"file:./build/index.css","style":"file:./build/style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://json.schemastore.org/block.json","apiVersion":2,"name":"createwithrani/event-block","version":"0.1.0","title":"Event","category":"widgets","description":"Easily add event listing with an Add to Calendar button to your website.","supports":{"html":false,"align":true},"attributes":{"imgId":{"type":"number"},"imgUrl":{"type":"string"},"eventDate":{"type":"string"},"eventDateEnd":{"type":"string"},"eventDateU":{"type":"integer"},"eventInfo":{"type":"object","default":{"eventTitle":"","eventDesc":""}},"buttonText":{"type":"string"}},"textdomain":"event-block","editorScript":"file:./build/index.js","editorStyle":"file:./build/index.css","style":"file:./build/style-index.css"}');
 
 /***/ })
 
