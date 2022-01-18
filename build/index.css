@@ -42,4 +42,9 @@
   align-items: center;
 }
 
+.block-info p {
+  margin-bottom: 0;
+  font-size: smaller;
+}
+
 /*# sourceMappingURL=index.css.map*/
