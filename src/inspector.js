@@ -9,6 +9,8 @@ import {
 import { format, __experimentalGetSettings } from "@wordpress/date";
 import { InspectorControls } from "@wordpress/block-editor";
 
+import { BlockInfo } from "./block-info";
+
 export const Inspector = (props) => {
 	const dateSettings = __experimentalGetSettings();
 	const timezone = dateSettings.timezone;
@@ -51,8 +53,11 @@ export const Inspector = (props) => {
 	};
 	return (
 		<InspectorControls>
-			<Panel title={__("Content Settings", "createwithrani-event-block")}>
-				<PanelBody>
+			<Panel title={__("Event Settings", "createwithrani-event-block")}>
+				<PanelBody
+					title={__("Event Settings", "createwithrani-event-block")}
+					initialOpen={true}
+				>
 					<div className="createwithrani-date-button">
 						<span>{__("Event Start", "createwithrani-event-block")}</span>
 						<Dropdown
@@ -93,6 +98,7 @@ export const Inspector = (props) => {
 					</div>
 				</PanelBody>
 			</Panel>
+			<BlockInfo />
 		</InspectorControls>
 	);
 };
