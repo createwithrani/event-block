@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Event",
 	"category": "widgets",
-	"description": "Easily add event listing with an Add to Google Calendar button to your website.",
+	"description": "Easily add event listing with an Add to Calendar button to your website.",
 	"supports": {
 		"html": false,
 		"align": true
@@ -20,6 +20,9 @@
 		"eventDate": {
 			"type": "string"
 		},
+		"eventDateEnd": {
+			"type": "string"
+		},
 		"eventDateU": {
 			"type": "integer"
 		},
@@ -31,9 +34,7 @@
 			}
 		},
 		"buttonText": {
-			"type": "string",
-			"source": "html",
-			"selector": "span"
+			"type": "string"
 		}
 	},
 	"textdomain": "event-block",
